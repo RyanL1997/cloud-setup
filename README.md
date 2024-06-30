@@ -22,6 +22,14 @@ This repository contains scripts to set up a development environment on an Ubunt
 
 ## Usage
 
+### Running the Setup Script Without Cloning
+
+You can run the setup script directly without cloning the repository using the following command:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/setup_env.sh)"
+```
+
 ### Cloning the Repository
 
 First, clone this repository to your local machine or directly to your EC2 instance:
@@ -30,6 +38,7 @@ First, clone this repository to your local machine or directly to your EC2 insta
 git clone https://github.com/RyanL1997/cloud-setup.git
 cd cloud-setup
 ```
+
 ### Running the Setup Script
 
 1. Make the setup script executable:

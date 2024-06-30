@@ -100,19 +100,6 @@ if ! grep -q "bindkey '^R' fzf-history-widget" "$ZSHRC"; then
   print_success "Added fzf-history-widget binding to .zshrc"
 fi
 
-# Copy .zshrc to the specified directory
-print_header "Copying .zshrc to $HOME/.zshhrc/workspace/cloud-setup"
-TARGET_DIR="$HOME/.zshhrc/workspace/cloud-setup"
-mkdir -p "$TARGET_DIR"
-cp ~/.zshrc "$TARGET_DIR"
-
-# Verify the copy
-if [ -f "$TARGET_DIR/.zshrc" ]; then
-  print_success ".zshrc has been copied to $TARGET_DIR"
-else
-  print_failure "Failed to copy .zshrc to $TARGET_DIR"
-fi
-
 # Reload Zsh configuration
 print_header "Reloading Zsh configuration"
 source "$ZSHRC"

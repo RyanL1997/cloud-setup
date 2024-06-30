@@ -7,26 +7,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Node.js (needed for Zsh)
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+    - uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y zsh curl
+      run: sudo apt-get update && sudo apt-get install -y zsh curl git
 
     - name: Run setup script
       run: |
         chmod +x setup_env.sh
         ./setup_env.sh
 
-    - name: Verify installation
+    - name: Verify the installation
       run: |
         git --version
         zsh --version
-        fzf --version
-        [ -d "$HOME/.oh-my-zsh" ] && echo "Oh My Zsh installed"
-        [ -d "$HOME/.zsh/zsh-syntax-highlighting" ] && echo "zsh-syntax-highlighting installed"
-        [ -d "$HOME/.zsh/zsh-autosuggestions" ] && echo "zsh-autosuggestions installed"
+        fzf --version || echo "fzf not found"
+        if [ -d "$HOME/.oh-my-zsh" ]; then echo "Oh My Zsh installed"; else echo "Oh My Zsh not installed"; fi
+        if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then echo "zsh-syntax-highlighting installed"; else echo "zsh-syntax-highlighting not installed"; fi
+        if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then echo "zsh-autosuggestions installed"; else echo "zsh-autosuggestions not installed"; fi
+        if [ -f "$HOME/.zshhrc/workspace/cloud-setup/.zshrc" ]; then echo ".zshrc file is present"; else echo ".zshrc file not found"; fi

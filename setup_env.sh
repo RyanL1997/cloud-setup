@@ -9,21 +9,19 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# Function to print section headers
-print_header() {
-  echo "###############################################"
-  echo "# $1"
-  echo "###############################################"
+# Function to print start messages
+print_start() {
+  echo -e "\e[33m[START]\e[0m $1"
 }
 
 # Function to print success messages
 print_success() {
-  echo -e "\e[32m[SUCCESS]\e[0m $1"
+  echo -e "\e[32m[SUCCESS]\e[0m $1\n"
 }
 
 # Function to print failure messages and show logs
 print_failure() {
-  echo -e "\e[31m[FAILURE]\e[0m $1"
+  echo -e "\e[31m[FAILURE]\e[0m $1\n"
   cat "$LOG_FILE"
   exit 1
 }
@@ -32,12 +30,12 @@ print_failure() {
 exec > >(tee -i "$LOG_FILE") 2>&1
 
 # 1. Check if workspace directory exists
-print_header "Checking if workspace directory exists"
+print_start "Checking if workspace directory exists"
 WORKSPACE_DIR="$HOME/workspace"
 if [ -d "$WORKSPACE_DIR" ]; then
   print_success "workspace directory already exists"
 else
-  echo "workspace directory does not exist. Creating workspace directory..."
+  echo -e "\e[34mworkspace directory does not exist. Creating workspace directory...\e[0m"
   mkdir -p "$WORKSPACE_DIR"
   if [ -d "$WORKSPACE_DIR" ]; then
     print_success "workspace directory successfully created"
@@ -47,25 +45,38 @@ else
 fi
 
 # 2. Check if git is installed
-print_header "Checking if git is installed"
+print_start "Checking if git is installed"
 if command_exists git; then
   print_success "git is already installed"
 else
-  echo "git is not installed. Installing git..."
+  echo -e "\e[34mgit is not installed. Installing git...\e[0m"
   sudo apt-get update && sudo apt-get install -y git || print_failure "git installation failed"
   command_exists git && print_success "git successfully installed" || print_failure "git installation failed"
 fi
 
 # 3. Check if zsh is installed
-print_header "Checking if zsh is installed"
+print_start "Checking if zsh is installed"
 if command_exists zsh; then
   print_success "zsh is already installed"
 else
-  echo "zsh is not installed. Installing zsh..."
+  echo -e "\e[34mzsh is not installed. Installing zsh...\e[0m"
   sudo apt-get install -y zsh || print_failure "zsh installation failed"
   command_exists zsh && print_success "zsh successfully installed" || print_failure "zsh installation failed"
 fi
 
-# 4. Switch to zsh and run zsh-specific setup script
-print_header "Switching to zsh to complete setup"
+# 4. Check if Java is installed
+print_start "Checking if Java is installed"
+if command_exists java; then
+  print_success "Java is already installed"
+else
+  echo -e "\e[34mJava is not installed. Installing Amazon Corretto 11...\e[0m"
+  sudo apt-get install -y wget
+  wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - || print_failure "Failed to add Corretto GPG key"
+  sudo add-apt-repository 'deb https://apt.corretto.aws stable main' || print_failure "Failed to add Corretto repository"
+  sudo apt-get update && sudo apt-get install -y java-11-amazon-corretto-jdk || print_failure "Java installation failed"
+  command_exists java && print_success "Java successfully installed" || print_failure "Java installation failed"
+fi
+
+# 5. Switch to zsh and run zsh-specific setup script
+print_start "Switching to zsh to continue the zsh specific setup"
 zsh -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/zsh_setup.sh)" || print_failure "zsh-specific setup script failed"

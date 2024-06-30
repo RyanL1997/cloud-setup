@@ -64,9 +64,11 @@ cd cloud-setup
 
 The main setup script performs the following tasks:
 
-1. Checks if Git is installed and installs it if necessary.
-2. Checks if Zsh is installed and installs it if necessary.
-3. Switches to Zsh and runs the Zsh-specific setup script (`zsh_setup.sh`).
+1. Checks if the `workspace` directory is created and create it if necessary
+2. Checks if Git is installed and installs it if necessary.
+3. Checks if Zsh is installed and installs it if necessary.
+4. Checks if Java is installed and installs it if necessary.
+5. Switches to Zsh and runs the Zsh-specific setup script (`zsh_setup.sh`).
 
 ### Zsh-Specific Setup Script (`zsh_setup.sh`)
 

@@ -46,7 +46,7 @@ if [ -d "$HOME/.oh-my-zsh" ]; then
   print_success "Oh My Zsh is already installed"
 else
   echo "Oh My Zsh is not installed. Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 2>&1 | tee ohmyzsh_install.log
   if [ -d "$HOME/.oh-my-zsh" ]; then
     print_success "Oh My Zsh successfully installed"
   else
@@ -60,8 +60,8 @@ if command_exists fzf; then
   print_success "fzf is already installed"
 else
   echo "fzf is not installed. Installing fzf..."
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install --all
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf 2>&1 | tee fzf_clone.log
+  ~/.fzf/install --all 2>&1 | tee fzf_install.log
   if command_exists fzf; then
     print_success "fzf successfully installed"
   else
@@ -75,7 +75,7 @@ if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
   print_success "zsh-syntax-highlighting is already installed"
 else
   echo "zsh-syntax-highlighting is not installed. Installing zsh-syntax-highlighting..."
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting 2>&1 | tee zsh_syntax_highlighting_clone.log
   if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
     print_success "zsh-syntax-highlighting successfully installed"
   else
@@ -89,7 +89,7 @@ if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then
   print_success "zsh-autosuggestions is already installed"
 else
   echo "zsh-autosuggestions is not installed. Installing zsh-autosuggestions..."
-  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions 2>&1 | tee zsh_autosuggestions_clone.log
   if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then
     print_success "zsh-autosuggestions successfully installed"
   else

@@ -63,9 +63,12 @@ print_header "Checking if fzf is installed"
 if command_exists fzf; then
   print_success "fzf is already installed"
 else
-  echo "fzf is not installed. Installing fzf..."
+  echo "fzf is not installed. Cloning fzf repository..."
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  echo "Running fzf installation script..."
   ~/.fzf/install --all
+  echo "Sourcing shell configuration..."
+  source ~/.zshrc || source ~/.bashrc
   if command_exists fzf; then
     print_success "fzf successfully installed"
   else
@@ -78,8 +81,10 @@ print_header "Checking if zsh-syntax-highlighting is installed"
 if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
   print_success "zsh-syntax-highlighting is already installed"
 else
-  echo "zsh-syntax-highlighting is not installed. Installing zsh-syntax-highlighting..."
+  echo "zsh-syntax-highlighting is not installed. Cloning zsh-syntax-highlighting repository..."
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+  echo "Sourcing shell configuration..."
+  source ~/.zshrc || source ~/.bashrc
   if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
     print_success "zsh-syntax-highlighting successfully installed"
   else
@@ -92,8 +97,10 @@ print_header "Checking if zsh-autosuggestions is installed"
 if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then
   print_success "zsh-autosuggestions is already installed"
 else
-  echo "zsh-autosuggestions is not installed. Installing zsh-autosuggestions..."
+  echo "zsh-autosuggestions is not installed. Cloning zsh-autosuggestions repository..."
   git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+  echo "Sourcing shell configuration..."
+  source ~/.zshrc || source ~/.bashrc
   if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then
     print_success "zsh-autosuggestions successfully installed"
   else

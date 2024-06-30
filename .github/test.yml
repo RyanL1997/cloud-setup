@@ -1,0 +1,32 @@
+name: Test Setup Script
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js (needed for Zsh)
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y zsh curl
+
+    - name: Run setup script
+      run: |
+        chmod +x setup_env.sh
+        ./setup_env.sh
+
+    - name: Verify installation
+      run: |
+        git --version
+        zsh --version
+        fzf --version
+        [ -d "$HOME/.oh-my-zsh" ] && echo "Oh My Zsh installed"
+        [ -d "$HOME/.zsh/zsh-syntax-highlighting" ] && echo "zsh-syntax-highlighting installed"
+        [ -d "$HOME/.zsh/zsh-autosuggestions" ] && echo "zsh-autosuggestions installed"

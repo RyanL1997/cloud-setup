@@ -77,8 +77,7 @@ The Zsh-specific setup script performs the following tasks:
 3. Checks if `zsh-syntax-highlighting` is installed and installs it if necessary.
 4. Checks if `zsh-autosuggestions` is installed and installs it if necessary.
 5. Configures the `.zshrc` file to source the installed plugins and adds key bindings.
-6. Copies the configured `.zshrc` file to a specified directory.
-7. Reloads the Zsh configuration.
+6. Reloads the Zsh configuration.
 
 ## Troubleshooting
 

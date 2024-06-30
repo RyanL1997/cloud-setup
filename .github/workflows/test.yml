@@ -9,20 +9,31 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y zsh curl git
+    - name: Ensure curl is installed
+      run: sudo apt-get update && sudo apt-get install -y curl
+
+    - name: Uninstall existing dependencies if present
+      run: |
+        if command -v zsh >/dev/null 2>&1; then
+          echo "Uninstalling zsh..."
+          sudo apt-get remove -y zsh
+        fi
+        if command -v java >/dev/null 2>&1; then
+          echo "Uninstalling Java..."
+          sudo apt-get remove -y openjdk-11-jdk
+        fi
 
     - name: Run setup script
       run: |
         chmod +x setup_env.sh
         ./setup_env.sh
 
-    - name: Verify the installation
+    - name: Verify the initial installation
       run: |
         git --version
         zsh --version
+        java -version || echo "Java not found"
         fzf --version || echo "fzf not found"
         if [ -d "$HOME/.oh-my-zsh" ]; then echo "Oh My Zsh installed"; else echo "Oh My Zsh not installed"; fi
         if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then echo "zsh-syntax-highlighting installed"; else echo "zsh-syntax-highlighting not installed"; fi
         if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then echo "zsh-autosuggestions installed"; else echo "zsh-autosuggestions not installed"; fi
-        if [ -f "$HOME/.zshhrc/workspace/cloud-setup/.zshrc" ]; then echo ".zshrc file is present"; else echo ".zshrc file not found"; fi

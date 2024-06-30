@@ -118,7 +118,3 @@ print_header "Reloading Zsh configuration"
 source "$ZSHRC"
 
 print_success "Setup completed successfully!"
-
-# Always show the logs
-print_header "Showing install logs"
-cat "$LOG_FILE"

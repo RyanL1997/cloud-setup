@@ -27,10 +27,10 @@ jobs:
           cargo uninstall zellij
         fi
 
-    - name: Run setup script
+    - name: Run setup script with auto-confirmation for zellij installation
       run: |
         chmod +x setup_env.sh
-        ./setup_env.sh
+        echo "y" | ./setup_env.sh
 
     - name: Verify the initial installation
       run: |

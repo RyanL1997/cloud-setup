@@ -77,6 +77,17 @@ else
   command_exists java && print_success "Java successfully installed" || print_failure "Java installation failed"
 fi
 
-# 5. Switch to zsh and run zsh-specific setup script
+# 5. Check if zellij is installed
+print_start "Checking if zellij is installed"
+if command_exists zellij; then
+  print_success "zellij is already installed"
+else
+  echo -e "\e[34mzellij is not installed. Installing zellij...\e[0m"
+  sudo apt-get install -y cargo || print_failure "cargo installation failed"
+  cargo install zellij || print_failure "zellij installation failed"
+  command_exists zellij && print_success "zellij successfully installed" || print_failure "zellij installation failed"
+fi
+
+# 6. Switch to zsh and run zsh-specific setup script
 print_start "Switching to zsh to continue the zsh specific setup"
 zsh -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/zsh_setup.sh)" || print_failure "zsh-specific setup script failed"

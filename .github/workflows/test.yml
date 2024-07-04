@@ -22,6 +22,10 @@ jobs:
           echo "Uninstalling Java..."
           sudo apt-get remove -y openjdk-11-jdk
         fi
+        if command -v zellij >/dev/null 2>&1; then
+          echo "Uninstalling zellij..."
+          cargo uninstall zellij
+        fi
 
     - name: Run setup script
       run: |
@@ -33,7 +37,7 @@ jobs:
         git --version
         zsh --version
         java -version || echo "Java not found"
-        fzf --version || echo "fzf not found"
+        zellij --version || echo "zellij not found"
         if [ -d "$HOME/.oh-my-zsh" ]; then echo "Oh My Zsh installed"; else echo "Oh My Zsh not installed"; fi
         if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then echo "zsh-syntax-highlighting installed"; else echo "zsh-syntax-highlighting not installed"; fi
         if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then echo "zsh-autosuggestions installed"; else echo "zsh-autosuggestions not installed"; fi

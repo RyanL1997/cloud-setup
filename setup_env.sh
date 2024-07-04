@@ -82,10 +82,21 @@ print_start "Checking if zellij is installed"
 if command_exists zellij; then
   print_success "zellij is already installed"
 else
-  echo -e "\e[34mzellij is not installed. Installing zellij...\e[0m"
-  sudo apt-get install -y cargo || print_failure "cargo installation failed"
-  cargo install zellij || print_failure "zellij installation failed"
-  command_exists zellij && print_success "zellij successfully installed" || print_failure "zellij installation failed"
+  read -p "zellij is not installed. Do you want to install zellij? (y/n): " choice
+  case "$choice" in 
+    y|Y)
+      echo -e "\e[34mInstalling zellij...\e[0m"
+      sudo apt-get install -y cargo || print_failure "cargo installation failed"
+      cargo install zellij || print_failure "zellij installation failed"
+      command_exists zellij && print_success "zellij successfully installed" || print_failure "zellij installation failed"
+      ;;
+    n|N)
+      echo -e "\e[33mSkipping zellij installation...\e[0m"
+      ;;
+    *)
+      echo -e "\e[31mInvalid choice. Skipping zellij installation...\e[0m"
+      ;;
+  esac
 fi
 
 # 6. Switch to zsh and run zsh-specific setup script

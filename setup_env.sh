@@ -105,10 +105,19 @@ if [ -d "$HOME/.nvm" ]; then
   print_success "nvm is already installed"
 else
   echo -e "\e[34mnvm is not installed. Installing nvm...\e[0m"
+  # Unset NVM_DIR if it's set
+  unset NVM_DIR
+  # Install nvm
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash || print_failure "nvm installation failed"
+  # Set up nvm in the current shell
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  command_exists nvm && print_success "nvm successfully installed" || print_failure "nvm installation failed"
+  # Verify installation
+  if command_exists nvm; then
+    print_success "nvm successfully installed"
+  else
+    print_failure "nvm installation failed"
+  fi
 fi
 
 # 7. Switch to zsh and run zsh-specific setup script

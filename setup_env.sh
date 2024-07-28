@@ -101,17 +101,26 @@ fi
 
 # 6. Check if nvm is installed
 print_start "Checking if nvm is installed"
-if [ -d "$HOME/.nvm" ]; then
+if [ -d "$HOME/.nvm" ] || [ -d "$HOME/.config/nvm" ]; then
   print_success "nvm is already installed"
 else
   echo -e "\e[34mnvm is not installed. Installing nvm...\e[0m"
   # Unset NVM_DIR if it's set
   unset NVM_DIR
   # Install nvm
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash || print_failure "nvm installation failed"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+  # Determine NVM_DIR
+  if [ -d "$HOME/.nvm" ]; then
+    NVM_DIR="$HOME/.nvm"
+  elif [ -d "$HOME/.config/nvm" ]; then
+    NVM_DIR="$HOME/.config/nvm"
+  else
+    print_failure "Unable to locate nvm directory after installation"
+  fi
   # Set up nvm in the current shell
-  export NVM_DIR="$HOME/.nvm"
+  export NVM_DIR
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   # Verify installation
   if command_exists nvm; then
     print_success "nvm successfully installed"

@@ -68,7 +68,9 @@ The main setup script performs the following tasks:
 2. Checks if Git is installed and installs it if necessary.
 3. Checks if Zsh is installed and installs it if necessary.
 4. Checks if Java is installed and installs it if necessary.
-5. Switches to Zsh and runs the Zsh-specific setup script (`zsh_setup.sh`).
+5. Checks if Zellij is installed and offers to install it if necessary.
+6. Checks if nvm (Node Version Manager) is installed and installs it if necessary.
+7. Switches to Zsh and runs the Zsh-specific setup script (`zsh_setup.sh`).
 
 ### Zsh-Specific Setup Script (`zsh_setup.sh`)
 

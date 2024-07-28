@@ -26,13 +26,17 @@ jobs:
           echo "Uninstalling zellij..."
           cargo uninstall zellij
         fi
+        if [ -d "$HOME/.nvm" ]; then
+          echo "Uninstalling nvm..."
+          rm -rf "$HOME/.nvm"
+        fi
 
     - name: Run setup script with auto-confirmation for zellij installation
       run: |
         chmod +x setup_env.sh
         echo "y" | ./setup_env.sh
 
-    - name: Verify the initial installation
+    - name: Verify the installation
       run: |
         git --version
         zsh --version
@@ -41,3 +45,10 @@ jobs:
         if [ -d "$HOME/.oh-my-zsh" ]; then echo "Oh My Zsh installed"; else echo "Oh My Zsh not installed"; fi
         if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then echo "zsh-syntax-highlighting installed"; else echo "zsh-syntax-highlighting not installed"; fi
         if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then echo "zsh-autosuggestions installed"; else echo "zsh-autosuggestions not installed"; fi
+        if [ -d "$HOME/.nvm" ]; then 
+          echo "nvm installed"
+          . "$HOME/.nvm/nvm.sh"
+          nvm --version
+        else 
+          echo "nvm not installed"
+        fi

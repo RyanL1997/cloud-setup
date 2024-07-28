@@ -99,6 +99,18 @@ else
   esac
 fi
 
-# 6. Switch to zsh and run zsh-specific setup script
+# 6. Check if nvm is installed
+print_start "Checking if nvm is installed"
+if [ -d "$HOME/.nvm" ]; then
+  print_success "nvm is already installed"
+else
+  echo -e "\e[34mnvm is not installed. Installing nvm...\e[0m"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash || print_failure "nvm installation failed"
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  command_exists nvm && print_success "nvm successfully installed" || print_failure "nvm installation failed"
+fi
+
+# 7. Switch to zsh and run zsh-specific setup script
 print_start "Switching to zsh to continue the zsh specific setup"
 zsh -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/zsh_setup.sh)" || print_failure "zsh-specific setup script failed"

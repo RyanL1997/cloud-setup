@@ -35,17 +35,29 @@ curl -O $CHECKSUM_URL
 INSTALLER_FILENAME=$(basename $DOWNLOAD_URL)
 CHECKSUM_FILENAME=$(basename $CHECKSUM_URL)
 
+# Debugging: Display checksum file content
+echo "Contents of checksum file:"
+cat $CHECKSUM_FILENAME
+
 # Extract the checksum from the .sha256 file
 echo "Extracting checksum..."
-EXPECTED_CHECKSUM=$(cat $CHECKSUM_FILENAME | awk '{print $1}')
+EXPECTED_CHECKSUM=$(grep -oE '^[a-f0-9]+' $CHECKSUM_FILENAME)
+
+# Debugging: Display expected checksum
+echo "Expected checksum: $EXPECTED_CHECKSUM"
 
 # Compute the actual checksum of the downloaded installer
 echo "Computing the actual checksum..."
 ACTUAL_CHECKSUM=$(shasum -a 256 $INSTALLER_FILENAME | awk '{print $1}')
 
+# Debugging: Display actual checksum
+echo "Actual checksum: $ACTUAL_CHECKSUM"
+
 # Compare the checksums
 if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
-    echo "Checksum verification failed! Exiting."
+    echo "Checksum verification failed!"
+    echo "Expected: $EXPECTED_CHECKSUM"
+    echo "Actual: $ACTUAL_CHECKSUM"
     exit 1
 fi
 echo "Checksum verified successfully."

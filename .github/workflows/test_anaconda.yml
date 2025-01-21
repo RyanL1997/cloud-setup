@@ -1,0 +1,32 @@
+name: Test Anaconda Installer
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Step 2: Make the script executable
+    - name: Make Script Executable
+      run: chmod +x install_anaconda.sh
+
+    # Step 3: Run the installation script
+    - name: Run Anaconda Installer
+      run: ./install_anaconda.sh
+
+    # Step 4: Verify Anaconda Installation
+    - name: Verify Anaconda Installation
+      run: |
+        source ~/.zshrc || true
+        conda --version

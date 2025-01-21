@@ -35,9 +35,20 @@ curl -O $CHECKSUM_URL
 INSTALLER_FILENAME=$(basename $DOWNLOAD_URL)
 CHECKSUM_FILENAME=$(basename $CHECKSUM_URL)
 
-# Verify the checksum
-echo "Verifying the checksum..."
-shasum -a 256 -c $CHECKSUM_FILENAME
+# Extract the checksum from the .sha256 file
+echo "Extracting checksum..."
+EXPECTED_CHECKSUM=$(cat $CHECKSUM_FILENAME | awk '{print $1}')
+
+# Compute the actual checksum of the downloaded installer
+echo "Computing the actual checksum..."
+ACTUAL_CHECKSUM=$(shasum -a 256 $INSTALLER_FILENAME | awk '{print $1}')
+
+# Compare the checksums
+if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+    echo "Checksum verification failed! Exiting."
+    exit 1
+fi
+echo "Checksum verified successfully."
 
 # Make the installer executable
 chmod +x $INSTALLER_FILENAME

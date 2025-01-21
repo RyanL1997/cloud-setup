@@ -16,42 +16,26 @@ get_architecture() {
     fi
 }
 
-# Define download URLs based on architecture
+# Define download URLs and pre-verified checksums
 ARCH=$(get_architecture)
 if [[ "$ARCH" == "x86_64" ]]; then
     DOWNLOAD_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-x86_64.sh"
-    CHECKSUM_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-x86_64.sh.sha256"
+    EXPECTED_CHECKSUM="9e5edfb61d80b2d65d0e3a0dd93f1e68a1cfce20e2f9f11f0cb25f6f6b20575b"
 elif [[ "$ARCH" == "arm64" ]]; then
     DOWNLOAD_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-arm64.sh"
-    CHECKSUM_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-arm64.sh.sha256"
+    EXPECTED_CHECKSUM="42a334e83492fa748e24ff2b0d08a79858ac007926172947a86c261e9aa56f3b"
 fi
 
-# Download the installer and checksum
+# Download the installer
 echo "Downloading Anaconda installer for $ARCH..."
 curl -O $DOWNLOAD_URL
-curl -O $CHECKSUM_URL
 
 # Extract the filename from the URL
 INSTALLER_FILENAME=$(basename $DOWNLOAD_URL)
-CHECKSUM_FILENAME=$(basename $CHECKSUM_URL)
-
-# Debugging: Display checksum file content
-echo "Contents of checksum file:"
-cat $CHECKSUM_FILENAME
-
-# Extract the checksum from the .sha256 file
-echo "Extracting checksum..."
-EXPECTED_CHECKSUM=$(grep -oE '^[a-f0-9]+' $CHECKSUM_FILENAME)
-
-# Debugging: Display expected checksum
-echo "Expected checksum: $EXPECTED_CHECKSUM"
 
 # Compute the actual checksum of the downloaded installer
 echo "Computing the actual checksum..."
 ACTUAL_CHECKSUM=$(shasum -a 256 $INSTALLER_FILENAME | awk '{print $1}')
-
-# Debugging: Display actual checksum
-echo "Actual checksum: $ACTUAL_CHECKSUM"
 
 # Compare the checksums
 if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
@@ -76,6 +60,6 @@ conda init
 
 # Cleanup
 echo "Cleaning up installation files..."
-rm -f $INSTALLER_FILENAME $CHECKSUM_FILENAME
+rm -f $INSTALLER_FILENAME
 
 echo "Anaconda installation completed successfully."

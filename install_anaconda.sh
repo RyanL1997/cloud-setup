@@ -60,4 +60,4 @@ fi
 echo "Cleaning up installation files..."
 rm -f $INSTALLER_FILENAME
 
-echo "Anaconda installation completed successfully."
+echo "Anaconda installation completed successfully. - GOOD LUCK, HAVE FUN FOR YOUR PYTHON CLASS LUCY!!!"

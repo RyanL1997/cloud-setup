@@ -30,6 +30,12 @@ You can run the setup script directly without cloning the repository using the f
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/setup_env.sh)"
 ```
 
+For anaconda script:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/RyanL1997/cloud-setup/main/install_anaconda.sh)"
+```
+
 ### Cloning the Repository
 
 First, clone this repository to your local machine or directly to your EC2 instance:

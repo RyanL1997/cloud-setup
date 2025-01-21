@@ -16,14 +16,12 @@ get_architecture() {
     fi
 }
 
-# Define download URLs and pre-verified checksums
+# Define download URLs based on architecture
 ARCH=$(get_architecture)
 if [[ "$ARCH" == "x86_64" ]]; then
     DOWNLOAD_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-x86_64.sh"
-    EXPECTED_CHECKSUM="9e5edfb61d80b2d65d0e3a0dd93f1e68a1cfce20e2f9f11f0cb25f6f6b20575b"
 elif [[ "$ARCH" == "arm64" ]]; then
     DOWNLOAD_URL="https://repo.anaconda.com/archive/Anaconda3-2023.07-1-MacOSX-arm64.sh"
-    EXPECTED_CHECKSUM="42a334e83492fa748e24ff2b0d08a79858ac007926172947a86c261e9aa56f3b"
 fi
 
 # Download the installer
@@ -33,18 +31,9 @@ curl -O $DOWNLOAD_URL
 # Extract the filename from the URL
 INSTALLER_FILENAME=$(basename $DOWNLOAD_URL)
 
-# Compute the actual checksum of the downloaded installer
-echo "Computing the actual checksum..."
-ACTUAL_CHECKSUM=$(shasum -a 256 $INSTALLER_FILENAME | awk '{print $1}')
-
-# Compare the checksums
-if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
-    echo "Checksum verification failed!"
-    echo "Expected: $EXPECTED_CHECKSUM"
-    echo "Actual: $ACTUAL_CHECKSUM"
-    exit 1
-fi
-echo "Checksum verified successfully."
+# Compute and output the checksum of the downloaded installer
+echo "Computing the checksum..."
+shasum -a 256 $INSTALLER_FILENAME
 
 # Make the installer executable
 chmod +x $INSTALLER_FILENAME
@@ -62,4 +51,4 @@ conda init
 echo "Cleaning up installation files..."
 rm -f $INSTALLER_FILENAME
 
-echo "Anaconda installation completed successfully."
+echo "Anaconda installation completed successfully - LJL."

@@ -23,11 +23,6 @@ jobs:
         run: ./install_anaconda.sh
         shell: bash
 
-      - name: Test Conda with Bash
-        run: |
-          export PATH="$HOME/anaconda3/bin:$PATH"
-          conda --version
-
   test-zsh:
     name: Test Anaconda Installer with Zsh
     runs-on: macos-latest
@@ -43,9 +38,3 @@ jobs:
 
       - name: Run Installer with Zsh
         run: zsh ./install_anaconda.sh
-
-      - name: Test Conda with Zsh
-        run: |
-          export PATH="$HOME/anaconda3/bin:$PATH"
-          conda --version
-        shell: zsh

@@ -38,17 +38,17 @@ shasum -a 256 $INSTALLER_FILENAME
 # Make the installer executable
 chmod +x $INSTALLER_FILENAME
 
-# Run the installer
-echo "Running the Anaconda installer..."
-./$INSTALLER_FILENAME
+# Run the installer in silent mode
+echo "Running the Anaconda installer in silent mode..."
+./$INSTALLER_FILENAME -b -p $HOME/anaconda3
 
 # Initialize Conda
 echo "Initializing Conda..."
-source ~/.bash_profile || source ~/.zshrc || true
+source $HOME/anaconda3/bin/activate
 conda init
 
 # Cleanup
 echo "Cleaning up installation files..."
 rm -f $INSTALLER_FILENAME
 
-echo "Anaconda installation completed successfully - LJL."
+echo "Anaconda installation completed successfully. - LJL<3"

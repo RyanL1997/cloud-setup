@@ -42,13 +42,25 @@ chmod +x $INSTALLER_FILENAME
 echo "Running the Anaconda installer in silent mode..."
 ./$INSTALLER_FILENAME -b -p $HOME/anaconda3
 
-# Initialize Conda
+# Initialize Conda based on the current shell
 echo "Initializing Conda..."
-source $HOME/anaconda3/bin/activate
+CURRENT_SHELL=$(basename $SHELL)
+if [[ "$CURRENT_SHELL" == "zsh" ]]; then
+    if [[ -f "$HOME/.zshrc" ]]; then
+        source $HOME/.zshrc
+    fi
+elif [[ "$CURRENT_SHELL" == "bash" ]]; then
+    if [[ -f "$HOME/.bashrc" ]]; then
+        source $HOME/.bashrc
+    fi
+else
+    echo "Shell not supported for automatic initialization. Please manually add Conda to your PATH."
+fi
+
 conda init
 
 # Cleanup
 echo "Cleaning up installation files..."
 rm -f $INSTALLER_FILENAME
 
-echo "Anaconda installation completed successfully. - LJL<3"
+echo "Anaconda installation completed successfully."

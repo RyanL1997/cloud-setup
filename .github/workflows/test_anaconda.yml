@@ -9,24 +9,43 @@ on:
       - main
 
 jobs:
-  test:
+  test-bash:
+    name: Test Anaconda Installer with Bash
     runs-on: macos-latest
-
     steps:
-    # Step 1: Checkout the repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    # Step 2: Make the script executable
-    - name: Make Script Executable
-      run: chmod +x install_anaconda.sh
+      - name: Make Script Executable
+        run: chmod +x install_anaconda.sh
 
-    # Step 3: Run the installation script
-    - name: Run Anaconda Installer
-      run: ./install_anaconda.sh
+      - name: Run Installer with Bash
+        shell: bash
+        run: ./install_anaconda.sh
 
-    # Step 4: Verify Anaconda Installation
-    - name: Verify Anaconda Installation
-      run: |
-        source ~/.zshrc || true
-        conda --version
+      - name: Test Conda with Bash
+        run: |
+          export PATH="$HOME/anaconda3/bin:$PATH"
+          conda --version
+
+  test-zsh:
+    name: Test Anaconda Installer with Zsh
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Zsh
+        run: brew install zsh
+
+      - name: Make Script Executable
+        run: chmod +x install_anaconda.sh
+
+      - name: Run Installer with Zsh
+        shell: zsh
+        run: ./install_anaconda.sh
+
+      - name: Test Conda with Zsh
+        run: |
+          export PATH="$HOME/anaconda3/bin:$PATH"
+          conda --version
